@@ -1,6 +1,6 @@
 {
   "name": "browser-orm",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "keywords": [
     "model",
     "storage",
@@ -24,7 +24,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/brianalois/Frontend-Model.git"
+    "url": "git+https://github.com/brianalois/browser-orm.git"
   },
   "author": "Brian Alois <brian@orangetech.io> (orangetech.io)",
   "license": "ISC",
