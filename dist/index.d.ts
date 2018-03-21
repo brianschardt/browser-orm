@@ -1,8 +1,8 @@
+import "reflect-metadata";
 export declare class Model {
     static model_name: string;
     static _instances: Array<Model>;
     static all_data: Array<object>;
-    static SCHEMA: Object;
     constructor(obj_data: any);
     getModelName(): any;
     toObject(): any;
@@ -31,7 +31,6 @@ export declare class Model {
     static setAllData(data: Array<Object>): void;
     static getAllData(): any;
     static getPrimaryKey(): string;
-    static getSchema(): any;
     static schemaValidate(data: any): any;
     static instantiateObject(obj_data: any, single?: boolean): any;
     static create(data: any, single?: boolean): any;
@@ -56,4 +55,9 @@ export declare class Model {
     _events: any;
     on(events: any, listener?: Function): () => void;
     emit(events: any, data?: any, toStatic?: boolean): void;
+    static SCHEMA: Object;
+    static getSchema(): any;
+    static _cols: any;
+    static getCols(): any;
 }
+export declare let Col: (options?: any) => any;

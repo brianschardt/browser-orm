@@ -1,12 +1,12 @@
 import * as _ from 'underscore';
 import get = require('lodash.get');
+import "reflect-metadata";
 
 export class Model{
 
     public static model_name:string;
     static _instances: Array<Model>;
     public static all_data:Array<object>;
-    public static SCHEMA:Object;
 
     constructor(obj_data:any){
         (<any>Object).assign(this, obj_data);
@@ -221,13 +221,7 @@ export class Model{
         return primary_key;
     }
 
-    static getSchema(){
-        let schema:any = this.SCHEMA;
-        if(!schema[this.getPrimaryKey()]){
-            schema['id'] = {type:'number', primary:true}
-        }
-        return schema;
-    }
+
     static schemaValidate(data: any){
         let schema:any = this.getSchema();
         let new_data:any = {};
@@ -657,4 +651,55 @@ export class Model{
 
         if(toStatic) this.static.emit(events, data); //this will send it to the whole class events
     }
+
+    //Static
+
+    public static SCHEMA:Object;
+
+    static getSchema(){
+        let schema:any = this.SCHEMA;
+        if(!schema[this.getPrimaryKey()]){
+            schema['id'] = {type:'number', primary:true}
+        }
+        console.log('s', schema);
+        return schema;
+    }
+    //test/
+    public static _cols:any;
+
+    static getCols(){
+        return this._cols;
+    }
+}
+
+export let Col = function(options?:any):any {
+
+    let defaults = {
+        unique  : false,
+        primary : false,
+    };
+
+    let set_options = (<any> Object).assign({}, defaults, options);
+
+    function actualDecorator(target: any, property: any) {
+        if(!target.constructor.SCHEMA) target.constructor.SCHEMA = {};
+
+        for(let i in target.constructor.SCHEMA){
+            let value = target.constructor.SCHEMA[i];
+            if(value.primary === true && set_options.primary === true) {
+                throw new Error(`Error: Can not have two columns set as primary in the same model. Columns "${i}" and "${property}" both have primary set to true.`);
+            }
+
+        }
+
+        let type = Reflect.getMetadata("design:type", target, property);
+
+        if(type == String){
+            // console.log('string', property)
+        }
+        target.constructor.SCHEMA[property] = set_options;
+
+    }
+
+    return actualDecorator
 }

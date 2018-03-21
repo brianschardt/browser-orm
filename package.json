@@ -1,6 +1,6 @@
 {
   "name": "browser-orm",
-  "version": "0.0.3",
+  "version": "1.0.0",
   "keywords": [
     "model",
     "storage",
@@ -32,6 +32,7 @@
     "@types/lodash.get": "^4.4.3",
     "@types/underscore": "^1.8.7",
     "lodash.get": "^4.4.2",
+    "reflect-metadata": "^0.1.12",
     "underscore": "^1.8.3"
   },
   "devDependencies": {

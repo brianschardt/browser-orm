@@ -2,6 +2,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 var _ = require("underscore");
 var get = require("lodash.get");
+require("reflect-metadata");
 var Model = /** @class */ (function () {
     function Model(obj_data) {
         //Instance Model Events
@@ -181,13 +182,6 @@ var Model = /** @class */ (function () {
             }
         }
         return primary_key;
-    };
-    Model.getSchema = function () {
-        var schema = this.SCHEMA;
-        if (!schema[this.getPrimaryKey()]) {
-            schema['id'] = { type: 'number', primary: true };
-        }
-        return schema;
     };
     Model.schemaValidate = function (data) {
         var schema = this.getSchema();
@@ -563,6 +557,40 @@ var Model = /** @class */ (function () {
         if (toStatic)
             this.static.emit(events, data); //this will send it to the whole class events
     };
+    Model.getSchema = function () {
+        var schema = this.SCHEMA;
+        if (!schema[this.getPrimaryKey()]) {
+            schema['id'] = { type: 'number', primary: true };
+        }
+        console.log('s', schema);
+        return schema;
+    };
+    Model.getCols = function () {
+        return this._cols;
+    };
     return Model;
 }());
 exports.Model = Model;
+exports.Col = function (options) {
+    var defaults = {
+        unique: false,
+        primary: false,
+    };
+    var set_options = Object.assign({}, defaults, options);
+    function actualDecorator(target, property) {
+        if (!target.constructor.SCHEMA)
+            target.constructor.SCHEMA = {};
+        for (var i in target.constructor.SCHEMA) {
+            var value = target.constructor.SCHEMA[i];
+            if (value.primary === true && set_options.primary === true) {
+                throw new Error("Error: Can not have two columns set as primary in the same model. Columns \"" + i + "\" and \"" + property + "\" both have primary set to true.");
+            }
+        }
+        var type = Reflect.getMetadata("design:type", target, property);
+        if (type == String) {
+            // console.log('string', property)
+        }
+        target.constructor.SCHEMA[property] = set_options;
+    }
+    return actualDecorator;
+};
