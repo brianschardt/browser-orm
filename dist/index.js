@@ -562,7 +562,6 @@ var Model = /** @class */ (function () {
         if (!schema[this.getPrimaryKey()]) {
             schema['id'] = { type: 'number', primary: true };
         }
-        console.log('s', schema);
         return schema;
     };
     Model.getCols = function () {

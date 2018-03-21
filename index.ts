@@ -661,7 +661,6 @@ export class Model{
         if(!schema[this.getPrimaryKey()]){
             schema['id'] = {type:'number', primary:true}
         }
-        console.log('s', schema);
         return schema;
     }
     //test/
