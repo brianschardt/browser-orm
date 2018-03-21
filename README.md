@@ -67,17 +67,16 @@ I create 2 files in the models directory called
 My user model looks like:
 ### Example Model
 ```
-import { Model } from 'browser-orm';
+import { Model, Col } from 'browser-orm';
 
 export class User extends Model {
-    first;
-    last;
-    static SCHEMA = {
-        _id:{type:'string', primary:true},
-        first:{type:'string'},
-        last:{type:'string'},
-    }
 
+    @Col({primary:true})
+    id: number;
+    @Col()
+    first;
+    @Col()
+    last;
 
     fullname(){
         return this.first + ' ' + this.last;
@@ -317,16 +316,14 @@ A simple example would be User that owns only one Post
 #### hasOne
 Example Model
 ```
-import { Model }            from 'browser-orm';
+import { Model, Col }            from 'browser-orm';
 
 export class User extends Model {
-  _id;
-  name;
 
-  static SCHEMA = {
-    _id:{type:'string', primary:true},//this means every time you make a new object you must give it a _id
-    name:{type:'string'},
-  };
+  @Col({primary:true})
+  id:number;
+  @Col
+  name:string;
 
   constructor(obj:object){
     super(obj);
@@ -339,13 +336,12 @@ export class User extends Model {
 }
 
 export class Post extends Model {
-  _id;
-  post_name;
 
-  static SCHEMA = {
-    _id:{type:'string', primary:true},//this means every time you make a new object you must give it a _id
-    post_name:{type:'string'},
-  };
+  @Col({primary:true})
+  id:number;
+  @Col()
+  post_name:string;
+
 
   constructor(obj:object){
     super(obj);
@@ -365,16 +361,14 @@ ngOnInit() {
 #### belongsTo
 Example Model
 ```
-import { Model }            from 'browser-orm';
+import { Model, Col }            from 'browser-orm';
 
 export class User extends Model {
-  _id;
-  name;
 
-  static SCHEMA = {
-    _id:{type:'string', primary:true},//this means every time you make a new object you must give it a _id
-    name:{type:'string'},
-  };
+  @Col({primary:true})
+  id;
+  @Col()
+  name;
 
   constructor(obj:object){
     super(obj);
@@ -387,13 +381,11 @@ export class User extends Model {
 }
 
 export class Post extends Model {
-  _id;
-  post_name;
 
-  static SCHEMA = {
-    _id:{type:'string', primary:true},//this means every time you make a new object you must give it a _id
-    post_name:{type:'string'},
-  };
+  @Col({primary:true})
+  id;
+  @Col
+  post_name;
 
   constructor(obj:object){
     super(obj);
@@ -418,16 +410,14 @@ ngOnInit() {
 Lets say the user has many posts
 Example Model
 ```
-import { Model }            from 'browser-orm';
+import { Model, Col }            from 'browser-orm';
 
 export class User extends Model {
-  _id;
-  name;
 
-  static SCHEMA = {
-    _id:{type:'string', primary:true},//this means every time you make a new object you must give it a _id
-    name:{type:'string'},
-  };
+  @Col({primary:true})
+  id;
+  @Col
+  name;
 
   constructor(obj:object){
     super(obj);
@@ -440,13 +430,11 @@ export class User extends Model {
 }
 
 export class Post extends Model {
-  _id;
-  post_name;
 
-  static SCHEMA = {
-    _id:{type:'string', primary:true},//this means every time you make a new object you must give it a _id
-    post_name:{type:'string'},
-  };
+  @Col({primary:true})
+  id:number;
+  @Col()
+  post_name:string;
 
   constructor(obj:object){
     super(obj);
