@@ -3,7 +3,7 @@ Simple state management with minimalistic API for angular 2+. This is similar to
 
 ## Installation
 ```
-npm i browser-model
+npm i browser-orm
 ```
 
 ## Doc Menu
@@ -65,7 +65,7 @@ I create 2 files in the models directory called
 My user model looks like:
 ### Example Model
 ```
-import { Model } from 'browser-model';
+import { Model } from 'browser-orm';
 
 export class User extends Model {
     first;
@@ -315,7 +315,7 @@ A simple example would be User that owns only one Post
 #### hasOne
 Example Model
 ```
-import { Model }            from 'browser-model';
+import { Model }            from 'browser-orm';
 
 export class User extends Model {
   _id;
@@ -363,7 +363,7 @@ ngOnInit() {
 #### belongsTo
 Example Model
 ```
-import { Model }            from 'browser-model';
+import { Model }            from 'browser-orm';
 
 export class User extends Model {
   _id;
@@ -416,7 +416,7 @@ ngOnInit() {
 Lets say the user has many posts
 Example Model
 ```
-import { Model }            from 'browser-model';
+import { Model }            from 'browser-orm';
 
 export class User extends Model {
   _id;
