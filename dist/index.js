@@ -2,7 +2,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 var _ = require("underscore");
 var get = require("lodash.get");
-require("reflect-metadata");
+// import "reflect-metadata";
 var Model = /** @class */ (function () {
     function Model(obj_data) {
         //Instance Model Events
@@ -263,10 +263,9 @@ var Model = /** @class */ (function () {
         if (!instances) {
             return null;
         }
-        this.remove(search);
         var array = [];
-        for (var i in instances) {
-            var instance = instances[i];
+        for (var _i = 0, instances_1 = instances; _i < instances_1.length; _i++) {
+            var instance = instances_1[_i];
             var primary = this.getPrimaryKey();
             var query_obj = {};
             query_obj[primary] = instance[primary];
@@ -279,7 +278,8 @@ var Model = /** @class */ (function () {
         var all_data = this.getAllData();
         var instance = all_data.filter(function (data) { return _.isMatch(data, search); })[0];
         if (!instance)
-            return null;
+            throw new Error('Could not find object to update');
+        ;
         this.remove(search);
         for (var o in new_data) {
             instance[o] = new_data[o];
@@ -585,10 +585,11 @@ exports.Col = function (options) {
                 throw new Error("Error: Can not have two columns set as primary in the same model. Columns \"" + i + "\" and \"" + property + "\" both have primary set to true.");
             }
         }
-        var type = Reflect.getMetadata("design:type", target, property);
-        if (type == String) {
-            // console.log('string', property)
-        }
+        // let type = Reflect.getMetadata("design:type", target, property);
+        //
+        // if(type == String){
+        //   // console.log('string', property)
+        // }
         target.constructor.SCHEMA[property] = set_options;
     }
     return actualDecorator;

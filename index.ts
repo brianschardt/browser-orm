@@ -1,6 +1,6 @@
 import * as _ from 'underscore';
 import get = require('lodash.get');
-import "reflect-metadata";
+// import "reflect-metadata";
 
 export class Model{
 
@@ -313,21 +313,22 @@ export class Model{
         this.emit(['remove', 'change']);
     }
 
-    static update(search:object, new_data?:any, single?:boolean){
+    static update(search:object, new_data:any, single?:boolean){
         let all_data = this.getAllData();
         let instances = all_data.filter((data:object)=>{ return _.isMatch(data, search)});
         if(!instances){
             return null;
         }
 
-        this.remove(search);
         let array = [];
-        for( let i in instances){
-            let instance:any = instances[i];
+        for( let instance of instances){
             let primary = this.getPrimaryKey();
+
             let query_obj:any ={};
             query_obj[primary] = (<any> instance)[primary];
+
             let r_instance = this.updateOne(query_obj, new_data, single);
+
             array.push(r_instance);
         }
 
@@ -335,10 +336,9 @@ export class Model{
     }
 
     static updateOne(search:object, new_data:any, single?:boolean){
-
         let all_data:any = this.getAllData();
         let instance:any = all_data.filter((data:any)=>{ return _.isMatch(data, search)})[0];
-        if(!instance) return null;
+        if(!instance) throw new Error('Could not find object to update');;
 
         this.remove(search);
         for (let o in new_data){
@@ -676,6 +676,11 @@ export let Col = function(options?:any):any {
     let defaults = {
         unique  : false,
         primary : false,
+        // only_one: {
+        //   kind:'none',//basic, active; basic will throw an error if another object is assigned the value that is only one, active will change all the other objects value to the defualt value
+        //   value:null,
+        //   default_value:null
+        // }
     };
 
     let set_options = (<any> Object).assign({}, defaults, options);
@@ -691,11 +696,11 @@ export let Col = function(options?:any):any {
 
         }
 
-        let type = Reflect.getMetadata("design:type", target, property);
-
-        if(type == String){
-            // console.log('string', property)
-        }
+        // let type = Reflect.getMetadata("design:type", target, property);
+        //
+        // if(type == String){
+        //   // console.log('string', property)
+        // }
         target.constructor.SCHEMA[property] = set_options;
 
     }
